@@ -1,6 +1,7 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials 
 from ytmusicapi import YTMusic
+import re
 
 
 client_id = 'ID'
@@ -47,20 +48,23 @@ ytmusic = YTMusic('headers_auth.json')
 playlistId = 'PLSjB2BQNsuuVbHpb5mueaaf7FqcttAmG8'
 
 
-for i in range(0,10):
+for i in range(0,20):
+
     artist = tracklist[i].split(",")[-1].strip()
-    title = tracklist[i].split(",")[0].strip()
+
+    title = re.sub(' +', ' ', tracklist[i].split(",")[0].replace('(','').replace(')','').replace('-',''))
+
     songs = ytmusic.search(tracklist[i], filter='songs')
+
     for result in songs:
-        # print(result["artists"][0]["name"])
         result_Artist = result["artists"][0]["name"].strip()
-        result_Title = result["title"].strip()
-        print(result_Title, title)
-        if result_Artist == artist and title == result_Title:
-            print((result_Artist, artist), (result_Title, title))
+        result_Title = re.sub(' +', ' ', result["title"].replace('(','').replace(')','').replace('-','').strip())
+        if artist == result_Artist and title == result_Title:
+            print(title + " added succesfully")
         #     ytmusic.add_playlist_items(playlistId, [result['videoId']])
-        # else:
-        #     continue
-        # break
+        else:
+            print(title + " wasn't available")
+            break
+        break
 
 
