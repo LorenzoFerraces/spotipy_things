@@ -1,0 +1,40 @@
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials 
+import auxiliares_spotipy as aux
+import multiprocessing as mp
+import time
+
+#spotify app authentication
+client_id = 'ID'
+client_secret = "Secret" 
+
+#Authentication - without user
+client_credentials_manager = SpotifyClientCredentials()
+sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager) 
+
+#spotify playlist url
+mejunje = "https://open.spotify.com/playlist/6DaFmf4BQVBRAonTp749vW?si=2b2c3e7b19af4357"
+
+#writing txt's
+txt_genres = open('genres.txt', 'w')
+txt_dates = open('dates.txt', 'w')
+
+#getting a dict of all songs
+lista = aux.tracklist (mejunje, 1200, sp)
+
+#extracting the values from that dict
+valores = lista.values()
+
+if __name__ == '__main__':
+    start_time = time.time()
+    with mp.Pool(23) as p:
+        result = p.map_async(aux.get_playlist_data, lista.values(), chunksize=3)
+        results = (result.get())
+    for num, result in enumerate(results):
+        try:
+            txt_dates.write(result[0] + '; ' + result[2] + '\n')
+            for genre in result[1]:
+                txt_genres.write(result[0] + '; ' + str(genre) + '\n')
+        except:
+            print("write error with number " + str(num))
+    print(time.time() - start_time, "seconds")
