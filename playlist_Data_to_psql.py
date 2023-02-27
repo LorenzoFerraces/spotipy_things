@@ -1,9 +1,11 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials 
-import auxiliares_spotipy as aux
 import multiprocessing as mp
-import time
+from configparser import ConfigParser
 import psycopg2  
+
+import auxiliares_spotipy as aux
+from auxiliares_DB import config
 
 #spotify app authentication
 client_id = 'ID'
@@ -27,9 +29,9 @@ lista = aux.tracklist (mejunje, 1200, sp)
 valores = lista.values()
 
 #connect to database "musica"
-musica_DB= psycopg2.connect(
-    host="localhost"
-    database="musica"
-    user="postgres"
-    
-)
+params = config()
+conn = psycopg2.connect(**params)
+
+#create a cursor
+cur = conn.cursor()
+

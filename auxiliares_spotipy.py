@@ -58,21 +58,4 @@ def tracklist(playlist_URL, total_Length, sp):
             track_number+=1
         current_Offset +=100
     return tracklist
-    
-def get_Playlist_Names(tracklist):
-    # propos: devuelve el nombre de todos los elementos de una playlist
-    # prec = URL de la playlist, cantidad de nombres a devolver y un objeto Spotipy iniciado 
-    for key, value in tracklist.items():
-        print(key, '->', value)
-        
-def get_playlist_data(values, sp):
-    try:
-        track_Name = track_Name(values)
-        track = get_Track(track_Name, sp)
-        artist_Genres = (track_Artist(track, sp)["genres"])
-        album_Release_Date = (track_Album(track, sp)["release_date"])
-        data = (str(track_Name), artist_Genres, str(album_Release_Date))
-    except:
-        data=("1: search error")
-    return data
         

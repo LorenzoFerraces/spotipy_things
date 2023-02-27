@@ -21,15 +21,30 @@ txt_dates = open('dates.txt', 'w')
 
 #getting a dict of all songs
 lista = aux.tracklist (mejunje, 1200, sp)
-
-#extracting the values from that dict
 valores = lista.values()
 
+def get_Item_Data(item):
+    try:
+        track_Name = aux.track_Name(item)
+        track = aux.get_Track(track_Name, sp)
+        artist_Genres = (aux.track_Artist(track, sp)["genres"])
+        album_Release_Date = (aux.track_Album(track, sp)["release_date"])
+        data = (str(track_Name), artist_Genres, str(album_Release_Date))
+        return(data)
+    except:
+        return("search error")
+
+
+def get_Playlist_Data(items):
+    with mp.Pool(23) as p:
+        async_result = p.map_async(get_Item_Data, items)
+        results = async_result.get()
+        return results
+    
+    
 if __name__ == '__main__':
     start_time = time.time()
-    with mp.Pool(23) as p:
-        result = p.map_async(aux.get_playlist_data, lista.values(), chunksize=3)
-        results = (result.get())
+    results = get_Playlist_Data(valores)
     for num, result in enumerate(results):
         try:
             txt_dates.write(result[0] + '; ' + result[2] + '\n')
@@ -38,3 +53,5 @@ if __name__ == '__main__':
         except:
             print("write error with number " + str(num))
     print(time.time() - start_time, "seconds")
+    
+    
