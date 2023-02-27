@@ -35,3 +35,4 @@ conn = psycopg2.connect(**params)
 #create a cursor
 cur = conn.cursor()
 
+results =
