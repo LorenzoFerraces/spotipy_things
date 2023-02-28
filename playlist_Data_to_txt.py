@@ -1,6 +1,6 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials 
-import auxiliares_spotipy as aux
+from object_spotipy import aux_Spotipy as objsp
 import multiprocessing as mp
 import time
 
@@ -12,39 +12,26 @@ client_secret = "Secret"
 client_credentials_manager = SpotifyClientCredentials()
 sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager) 
 
+#aux object init
+aux = objsp('ID', "Secret", sp)
+
 #spotify playlist url
 mejunje = "https://open.spotify.com/playlist/6DaFmf4BQVBRAonTp749vW?si=2b2c3e7b19af4357"
+
 
 #writing txt's
 txt_genres = open('genres.txt', 'w')
 txt_dates = open('dates.txt', 'w')
 
 #getting a dict of all songs
-lista = aux.tracklist (mejunje, 1200, sp)
+lista = aux.tracklist(mejunje, 1400)
 valores = lista.values()
-
-def get_Item_Data(item):
-    try:
-        track_Name = aux.track_Name(item)
-        track = aux.get_Track(track_Name, sp)
-        artist_Genres = (aux.track_Artist(track, sp)["genres"])
-        album_Release_Date = (aux.track_Album(track, sp)["release_date"])
-        data = (str(track_Name), artist_Genres, str(album_Release_Date))
-        return(data)
-    except:
-        return("search error")
-
-
-def get_Playlist_Data(items):
-    with mp.Pool(23) as p:
-        async_result = p.map_async(get_Item_Data, items)
-        results = async_result.get()
-        return results
     
-    
+
+
 if __name__ == '__main__':
     start_time = time.time()
-    results = get_Playlist_Data(valores)
+    results = aux.get_Playlist_Data(valores)
     for num, result in enumerate(results):
         try:
             txt_dates.write(result[0] + '; ' + result[2] + '\n')

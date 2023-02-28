@@ -36,20 +36,20 @@ class aux_Spotipy:
     def get_Track(self, name):
         # propos: buscar un nombre en spotify
         # prec = string con el nombre y objeto spotipy
-        result = self.sp.search(name)
+        result = (self.sp).search(name)
         track = result["tracks"]["items"][0]
         return track
 
     def track_Album(self, track):
         # propos: encontrar el alvum asociado a una cancion
         # prec = dict de la cancion, y objeto spotipy
-        album = self.sp.album(track["album"]["external_urls"]["spotify"])
+        album = (self.sp).album(track["album"]["external_urls"]["spotify"])
         return album
 
     def track_Artist(self, track):
         # propos: encontrar el artista asociado a una cancion
         # prec = dict de la cancion, y objeto spotipy
-        artist = self.sp.artist(track["artists"][0]["external_urls"]["spotify"])
+        artist = (self.sp).artist(track["artists"][0]["external_urls"]["spotify"])
         return artist
 
     def tracklist(self, playlist_URL, total_Length):
@@ -60,7 +60,7 @@ class aux_Spotipy:
         current_Offset = 0
         uri = self.playlist_URL_to_URI(playlist_URL)
         while(current_Offset < total_Length):
-            for track in self.sp.playlist_tracks(uri, offset=current_Offset)["items"]:
+            for track in (self.sp).playlist_tracks(uri, offset=current_Offset)["items"]:
                 tracklist[track_number] = track
                 track_number+=1
             current_Offset +=100
@@ -69,13 +69,9 @@ class aux_Spotipy:
     def get_Item_Data(self, item):
         try:
             track_Name = self.track_Name(item)
-            print("paso track_Name")
-            track = self.get_Track(track_Name, self.sp())
-            print("paso track_Name")
-            artist_Genres = (self.track_Artist(track, self.sp)["genres"])
-            print("paso track_Name")
-            album_Release_Date = (self.track_Album(track, self.sp())["release_date"])
-            print("paso track_Name")
+            track = self.get_Track(track_Name)
+            artist_Genres = (self.track_Artist(track)["genres"])
+            album_Release_Date = (self.track_Album(track)["release_date"])
             data = (str(track_Name), artist_Genres, str(album_Release_Date))
             return(data)
         except:
