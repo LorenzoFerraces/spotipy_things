@@ -16,3 +16,8 @@ def config(filename='database.ini', section='postgresql'):
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
 
     return db
+
+
+def insert_release(name_Param, release_date_Param):
+    query =   """INSERT INTO release (name, release_date) VALUES ({name}, {release_date}) RETURNING name;""".format(name = name_Param, release_date = release_date_Param)
+    return query
