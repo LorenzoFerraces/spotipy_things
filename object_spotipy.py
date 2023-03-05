@@ -33,10 +33,10 @@ class aux_Spotipy:
         track_Name = track["track"]["name"]
         return track_Name
 
-    def get_Track(self, name):
+    def get_Track(self, query):
         # propos: buscar un nombre en spotify
         # prec = string con el nombre y objeto spotipy
-        result = (self.sp).search(name)
+        result = (self.sp).search(query)
         #CAMBIAR PARA VERIFICAR QUE SEA EL MISMO ARTISTA TAMBIEN
         track = result["tracks"]["items"][0]
         return track
@@ -70,7 +70,9 @@ class aux_Spotipy:
     def get_Item_Data(self, item):
         try:
             track_Name = self.track_Name(item).strip()
-            track = self.get_Track(track_Name)
+            artist = item["track"]["artists"][0]["name"]
+            query = track_Name + '' + artist
+            track = self.get_Track(query)
             artist_Genres = (self.track_Artist(track)["genres"])
             artist_Name = self.track_Artist(track)['name'].strip()
             album_Release_Date = (self.track_Album(track)["release_date"]).strip()

@@ -1,7 +1,6 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials 
 from object_spotipy import aux_Spotipy as objsp
-import multiprocessing as mp
 import time
 
 #spotify app authentication
@@ -40,5 +39,4 @@ if __name__ == '__main__':
         except:
             print("write error with number " + str(num))
     print(time.time() - start_time, "seconds")
-    
     
