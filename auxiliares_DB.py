@@ -18,6 +18,7 @@ def config(filename='database.ini', section='postgresql'):
     return db
 
 
-def insert_release(name_Param, release_date_Param):
-    query =   """INSERT INTO release (name, release_date) VALUES ({name}, {release_date}) RETURNING name;""".format(name = name_Param, release_date = release_date_Param)
+def insert_release(name_Param, artist_Param, release_date_Param):
+    query =   """INSERT INTO release (name, artist, release_date) VALUES ({name}, {artist}, {release_date}) RETURNING name, artist;""".format(
+        name = name_Param, artist = artist_Param, release_date = release_date_Param)
     return query

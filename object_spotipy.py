@@ -37,11 +37,12 @@ class aux_Spotipy:
         # propos: buscar un nombre en spotify
         # prec = string con el nombre y objeto spotipy
         result = (self.sp).search(name)
+        #CAMBIAR PARA VERIFICAR QUE SEA EL MISMO ARTISTA TAMBIEN
         track = result["tracks"]["items"][0]
         return track
 
     def track_Album(self, track):
-        # propos: encontrar el alvum asociado a una cancion
+        # propos: encontrar el album asociado a una cancion
         # prec = dict de la cancion, y objeto spotipy
         album = (self.sp).album(track["album"]["external_urls"]["spotify"])
         return album
@@ -68,11 +69,12 @@ class aux_Spotipy:
 
     def get_Item_Data(self, item):
         try:
-            track_Name = self.track_Name(item)
+            track_Name = self.track_Name(item).strip()
             track = self.get_Track(track_Name)
             artist_Genres = (self.track_Artist(track)["genres"])
-            album_Release_Date = (self.track_Album(track)["release_date"])
-            data = (str(track_Name), artist_Genres, str(album_Release_Date))
+            artist_Name = self.track_Artist(track)['name'].strip()
+            album_Release_Date = (self.track_Album(track)["release_date"]).strip()
+            data = (str(track_Name), str(artist_Name),  artist_Genres, str(album_Release_Date))
             return(data)
         except:
             return("search error")

@@ -26,14 +26,16 @@ for num, line in enumerate(txt_dates):
     try:
         raw_Name = line.split(';')[0].strip()
         name = "\'" + clear_Single_Quote(raw_Name) + "\'"
-        raw_Date = line.split(';')[1].strip()
+        raw_Artist = line.split(';')[1].strip()
+        artist = "\'" + clear_Single_Quote(raw_Artist) + "\'"
+        raw_Date = line.split(';')[2].strip()
         yyyy_mm_dd = raw_Date.split('-') 
         if(len(yyyy_mm_dd) < 3):
             continue
         date = "\'" + clear_Single_Quote(raw_Date) + "\'"
     except:
         print("problem with ")
-    query = aux_DB.insert_release(name, date)
+    query = aux_DB.insert_release(name, artist, date)
     
     cur.execute(query)
     db_dump = cur.fetchone()
