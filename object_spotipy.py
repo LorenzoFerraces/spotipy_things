@@ -33,22 +33,26 @@ class aux_Spotipy:
         track_Name = track["track"]["name"]
         return track_Name
 
-    def get_Track(self, query):
+    def get_Track(self, query, target_artist):
         # propos: buscar un nombre en spotify
         # prec = string con el nombre y objeto spotipy
-        result = (self.sp).search(query)
-        #CAMBIAR PARA VERIFICAR QUE SEA EL MISMO ARTISTA TAMBIEN
-        track = result["tracks"]["items"][0]
+        results = (self.sp).search(query)["tracks"]["items"]
+        track = results[0]
+        for result in results:
+            result_artist = self.artist_Name(result)
+            #ESTO NO VA A FUNCIONAR
+            if (target_artist in result_artist):
+                track = result
         return track
 
     def track_Album(self, track):
-        # propos: encontrar el album asociado a una cancion
+        # propos: encontrar el album asociado a una cancion cuando no tenemos el dato dentro de esta
         # prec = dict de la cancion, y objeto spotipy
         album = (self.sp).album(track["album"]["external_urls"]["spotify"])
         return album
 
     def track_Artist(self, track):
-        # propos: encontrar el artista asociado a una cancion
+        # propos: encontrar el artista asociado a una cancion cuando no tenemos el dato dentro de esta
         # prec = dict de la cancion, y objeto spotipy
         artist = (self.sp).artist(track["artists"][0]["external_urls"]["spotify"])
         return artist
@@ -70,9 +74,10 @@ class aux_Spotipy:
     def get_Item_Data(self, item):
         try:
             track_Name = self.track_Name(item).strip()
-            artist = item["track"]["artists"][0]["name"]
-            query = track_Name + '' + artist
-            track = self.get_Track(query)
+            artist = item["track"]["artists"][0]["name"].strip()
+            query = track_Name + ' ' + artist
+            print(query)
+            track = self.get_Track(query, artist)
             artist_Genres = (self.track_Artist(track)["genres"])
             artist_Name = self.track_Artist(track)['name'].strip()
             album_Release_Date = (self.track_Album(track)["release_date"]).strip()

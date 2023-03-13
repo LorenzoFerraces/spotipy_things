@@ -45,7 +45,7 @@ for num, line in enumerate(txt_dates):
 
 
 
-# conn.commit()
-# cur.close()
+conn.commit()
+cur.close()
 
 
