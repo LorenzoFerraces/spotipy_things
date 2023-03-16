@@ -33,6 +33,8 @@ if __name__ == '__main__':
     results = aux.get_Playlist_Data(valores)
     for num, result in enumerate(results):
         try:
+            if result[0] == 's':
+                continue
             txt_dates.write(result[0] + '; ' + result[1] + '; ' +  result[3] + '\n')
             for genre in result[2]:
                 txt_genres.write(result[0] + '; ' + str(genre) + '\n')

@@ -22,30 +22,48 @@ def clear_Single_Quote(string):
     return result
         
 
-for num, line in enumerate(txt_dates):
-    try:
+def insert_Into_Release(dates):
+    for line in dates:
+        try:
+            raw_Name = line.split(';')[0].strip()
+            name = "\'" + clear_Single_Quote(raw_Name) + "\'"
+            raw_Artist = line.split(';')[1].strip()
+            artist = "\'" + clear_Single_Quote(raw_Artist) + "\'"
+            raw_Date = line.split(';')[2].strip()
+            yyyy_mm_dd = raw_Date.split('-') 
+            if(len(yyyy_mm_dd) < 3):
+                continue
+            date = "\'" + clear_Single_Quote(raw_Date) + "\'"
+        except:
+            print("problem with ")
+        query = aux_DB.insert_release(name, artist, date)
+
+        cur.execute(query)
+        db_dump = cur.fetchone()
+        print(db_dump)
+
+
+        
+def insert_Into_Genres(genres):
+    for line in genres:
         raw_Name = line.split(';')[0].strip()
         name = "\'" + clear_Single_Quote(raw_Name) + "\'"
-        raw_Artist = line.split(';')[1].strip()
-        artist = "\'" + clear_Single_Quote(raw_Artist) + "\'"
-        raw_Date = line.split(';')[2].strip()
-        yyyy_mm_dd = raw_Date.split('-') 
-        if(len(yyyy_mm_dd) < 3):
-            continue
-        date = "\'" + clear_Single_Quote(raw_Date) + "\'"
-    except:
-        print("problem with ")
-    query = aux_DB.insert_release(name, artist, date)
-    
-    cur.execute(query)
-    db_dump = cur.fetchone()
-    print(db_dump)
-    
-    # print("error with query number " + str(num))
+        raw_genre = line.split(';')[1].strip()
+        genre = "\'" + clear_Single_Quote(raw_genre) + "\'"
+        
+        query = aux_DB.insert_genres(name, genre)
+        cur.execute(query)
+        db_dump = cur.fetchone()
+        print(db_dump)
 
 
 
-conn.commit()
-cur.close()
+
+if __name__ == '__main__':
+
+    # insert_Into_Release(txt_dates)
+    insert_Into_Genres(txt_genres)
+    # conn.commit()
+    # cur.close()
 
 
