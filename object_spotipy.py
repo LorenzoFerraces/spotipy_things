@@ -79,9 +79,8 @@ class aux_Spotipy:
             print(query)
             track = self.get_Track(query, artist)
             artist_Genres = (self.track_Artist(track)["genres"])
-            artist_Name = self.track_Artist(track)['name'].strip()
             album_Release_Date = (self.track_Album(track)["release_date"]).strip()
-            data = (str(track_Name), str(artist_Name),  artist_Genres, str(album_Release_Date))
+            data = (str(track_Name), str(artist),  artist_Genres, str(album_Release_Date))
             return(data)
         except:
             return("search error")

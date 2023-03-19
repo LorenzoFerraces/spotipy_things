@@ -33,11 +33,14 @@ if __name__ == '__main__':
     results = aux.get_Playlist_Data(valores)
     for num, result in enumerate(results):
         try:
+            #descartar resultados erroneos
             if result[0] == 's':
                 continue
-            txt_dates.write(result[0] + '; ' + result[1] + '; ' +  result[3] + '\n')
+            #quitar ";" de nombre de canciones
+            song_name = result[0].replace(';',' ')
+            txt_dates.write(song_name + '; ' + result[1] + '; ' +  result[3] + '\n')
             for genre in result[2]:
-                txt_genres.write(result[0] + '; ' + str(genre) + '\n')
+                txt_genres.write(song_name + '; ' + str(genre) + '\n')
         except:
             print("write error with number " + str(num))
     print(time.time() - start_time, "seconds")
