@@ -23,7 +23,7 @@ def insert_release(name_Param, artist_Param, release_date_Param):
         name = name_Param, artist = artist_Param, release_date = release_date_Param)
     return query
 
-def insert_genres(name_Param, genre_Param):
-    query =   """INSERT INTO genres (name, genre) VALUES ({name}, {genre}) RETURNING name, genre;""".format(
-        name = name_Param, genre = genre_Param)
+def insert_genres(name_Param, artist_Param, genre_Param):
+    query =   """INSERT INTO genres (name, artist, genre) VALUES ({name}, {artist}, {genre}) RETURNING name, genre;""".format(
+        name = name_Param, artist = artist_Param, genre = genre_Param)
     return query

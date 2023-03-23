@@ -38,9 +38,12 @@ if __name__ == '__main__':
                 continue
             #quitar ";" de nombre de canciones
             song_name = result[0].replace(';',' ')
-            txt_dates.write(song_name + '; ' + result[1] + '; ' +  result[3] + '\n')
-            for genre in result[2]:
-                txt_genres.write(song_name + '; ' + str(genre) + '\n')
+            artist = result[1]
+            genres = result[2]
+            release_date = result[3]
+            txt_dates.write(song_name + '; ' + artist + '; ' +  release_date + '\n')
+            for genre in genres:
+                txt_genres.write(song_name + '; ' + artist + '; ' + str(genre) + '\n')
         except:
             print("write error with number " + str(num))
     print(time.time() - start_time, "seconds")
