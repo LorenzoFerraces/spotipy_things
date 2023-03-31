@@ -27,3 +27,7 @@ def insert_genres(name_Param, artist_Param, genre_Param):
     query =   """INSERT INTO genres (name, artist, genre) VALUES ({name}, {artist}, {genre}) RETURNING name, genre;""".format(
         name = name_Param, artist = artist_Param, genre = genre_Param)
     return query
+
+def clean_Table(table_Name):
+    query = """DELETE from {name};""".format(name=table_Name)
+    return query

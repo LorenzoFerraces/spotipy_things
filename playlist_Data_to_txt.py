@@ -31,6 +31,8 @@ valores = lista.values()
 if __name__ == '__main__':
     start_time = time.time()
     results = aux.get_Playlist_Data(valores)
+    txt_dates.write("name; artist; date" + '\n')
+    txt_genres.write("name; artist; genre" + '\n')
     for num, result in enumerate(results):
         try:
             #descartar resultados erroneos

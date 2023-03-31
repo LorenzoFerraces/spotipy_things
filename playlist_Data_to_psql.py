@@ -62,6 +62,10 @@ def insert_Into_Genres(genres):
 
 if __name__ == '__main__':
 
+    query1 = aux_DB.clean_Table('release')
+    cur.execute(query1)
+    query2 = aux_DB.clean_Table('genres')
+    cur.execute(query2)
     insert_Into_Release(txt_dates)
     insert_Into_Genres(txt_genres)
     conn.commit()
