@@ -5,33 +5,33 @@ import re
 class aux_Spotipy:
     
     def __init__(self, id, secret, spotipy):
-        self.client_id = id
-        self.client_credentials_manager = secret
-        self.sp = spotipy
+        self.__client_id = id
+        self.__client_credentials_manager = secret
+        self.__sp = spotipy
+        
+    @property
+    def sp(self):
+        return self.__sp
     
     def playlist_URL_to_URI(self, link):
     # propos: convierte la URL de una playlist en un URI 
     # prec = la URl de una playlist de spotify
-        uri = link.split("/")[-1].split("?")[0]
-        return uri
+        return link.split("/")[-1].split("?")[0]
 
     def clean_Title(self, title):
         # propos: limpiar el titulo para buscarlo en YTmusic
         # prec = string, el titulo de una cancion
-        prepared_Title = re.sub(' +', ' ', title.replace('(','').replace(')','').replace('-','').replace('\'','').replace('\"','').strip())
-        return prepared_Title
+        return re.sub(' +', ' ', title.replace('(','').replace(')','').replace('-','').replace('\'','').replace('\"','').strip())
 
     def artist_Name(self, media):
         # propos: encontrar el nombre de un artista en el dict de la esta
         # prec = dict con la estructura correcta
-        found_Artist = media["artists"][0]["name"].strip()
-        return found_Artist
-
+        return (media["artists"][0]["name"].strip())
+    
     def track_Name(self, track):
         # propos: encontrar el nombre de una cancion en el dict de esta
         # prec = dict con la estructura correcta
-        track_Name = track["track"]["name"]
-        return track_Name
+        return (track["track"]["name"])
 
     def get_Track(self, query, target_artist):
         # propos: buscar un nombre en spotify
@@ -48,14 +48,12 @@ class aux_Spotipy:
     def track_Album(self, track):
         # propos: encontrar el album asociado a una cancion cuando no tenemos el dato dentro de esta
         # prec = dict de la cancion, y objeto spotipy
-        album = (self.sp).album(track["album"]["external_urls"]["spotify"])
-        return album
+        return (self.sp).album(track["album"]["external_urls"]["spotify"])
 
     def track_Artist(self, track):
         # propos: encontrar el artista asociado a una cancion cuando no tenemos el dato dentro de esta
         # prec = dict de la cancion, y objeto spotipy
-        artist = (self.sp).artist(track["artists"][0]["external_urls"]["spotify"])
-        return artist
+        return (self.sp).artist(track["artists"][0]["external_urls"]["spotify"])
 
     def tracklist(self, playlist_URL, total_Length):
         # propos: devuelve todos los tracks de una playlist
@@ -89,7 +87,7 @@ class aux_Spotipy:
     def get_Playlist_Data(self, items):
         with mp.Pool(23) as p:
             async_result = p.map_async(self.get_Item_Data, items)
-            results = async_result.get()
-            return results
+            return async_result.get()
+
 
     

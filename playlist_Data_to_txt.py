@@ -15,21 +15,24 @@ sp = spotipy.Spotify(client_credentials_manager = client_credentials_manager)
 aux = objsp('ID', "Secret", sp)
 
 #spotify playlist url
-mejunje = "https://open.spotify.com/playlist/6DaFmf4BQVBRAonTp749vW?si=2b2c3e7b19af4357"
+# mejunje = "https://open.spotify.com/playlist/6DaFmf4BQVBRAonTp749vW?si=2b2c3e7b19af4357"
 
 
 #writing txt's
 txt_genres = open('genres.txt', 'w')
 txt_dates = open('dates.txt', 'w')
 
-#getting a dict of all songs
-lista = aux.tracklist(mejunje, 1400)
-valores = lista.values()
     
 
 
 if __name__ == '__main__':
-    start_time = time.time()
+    try:
+        playlist = input("URL de la playlist: ")
+        cantidad = int(input("Cantidad de canciones a contar: "))
+        lista = aux.tracklist(playlist, cantidad)
+        valores = lista.values()
+    except:
+        print("parametros incorrectos")
     results = aux.get_Playlist_Data(valores)
     txt_dates.write("name; artist; date" + '\n')
     txt_genres.write("name; artist; genre" + '\n')
@@ -48,5 +51,5 @@ if __name__ == '__main__':
                 txt_genres.write(song_name + '; ' + artist + '; ' + str(genre) + '\n')
         except:
             print("write error with number " + str(num))
-    print(time.time() - start_time, "seconds")
+
     
