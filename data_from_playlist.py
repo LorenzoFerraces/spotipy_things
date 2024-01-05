@@ -50,18 +50,17 @@ if __name__ == "__main__":
         for num, result in enumerate(results):
             try:
                 # descartar resultados erroneos
-                if result[0] == "s":
+                if not isinstance(result, tuple):
+                    print(f"resultado erroneo: {result}")
                     continue
                 # quitar ";" de nombre de canciones
                 song_name = result[0].replace(";", " ")
                 artist = result[1]
                 genres = result[2]
                 release_date = result[3]
-                txt_dates.write(song_name + "; " + artist + "; " + release_date + "\n")
+                txt_dates.write(f"{song_name} ; {artist} ; {release_date} \n")
                 for genre in genres:
-                    txt_genres.write(
-                        song_name + "; " + artist + "; " + str(genre) + "\n"
-                    )
+                    txt_genres.write(f"{song_name} ; {artist} ; {str(genre)}\n")
             except:
                 print("write error with number " + str(num))
 

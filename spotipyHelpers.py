@@ -39,8 +39,7 @@ def search_track_album(spotipy: object, track: Mapping) -> str:
 def search_track_artist(spotipy: object, track: Mapping) -> str:
     # propos: buscar el artista asociado a una cancion
     # prec = dict de la cancion, y objeto spotipy
-    print(f"search_track_artist: {track['artists']}")
-    return spotipy.artist(track["artists"][0]["external_urls"]["spotify"])
+    return spotipy.artist(track['track']["artists"][0]["external_urls"]["spotify"])
 
 
 def release_date(track: Mapping) -> str:
@@ -48,7 +47,6 @@ def release_date(track: Mapping) -> str:
 
 
 def artist_name(track: Mapping) -> str:
-    print(f"artist_name: {track['track']['artists']}")
     return track["track"]["artists"][0]["name"].strip()
 
 
@@ -70,15 +68,17 @@ def tracklist(spotipy: object, playlist_URL: str, total_Length: int) -> Mapping:
 def get_item_data(spotipy: object, track: Mapping) -> tuple:
     try:
         name = track_name(track)
-        artist = artist_name(track)
-        # print(f"{name}, {artist}")
-        artist_genres = search_track_artist(spotipy, track)["genres"]
-        date = release_date(track)
-        data = (str(name), str(artist), artist_genres, str(date))
-        return data
-    except Exception as err:
-        print(err)
-        return "search error"
+    except:
+        return "error while retrieving name"
+    artist = artist_name(track)
+    try:
+        artist_genres = search_track_artist(spotipy, track)['genres']
+    except:
+        print("error at search_track_artist")
+    date = release_date(track)
+    data = (str(name), str(artist), artist_genres, str(date))
+    return data
+
 
 
 def get_playlist_data(spotipy: object, items: Iterable) -> list:
