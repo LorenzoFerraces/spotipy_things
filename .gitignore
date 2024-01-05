@@ -1,3 +1,6 @@
 *.ini
 *.txt
-.json
+testing.*
+__pycache__
+.cache
+.vscode
